@@ -19,6 +19,9 @@ public class KmlPayloadInfo {
     @XStreamAlias("wpml:payloadEnumValue")
     private String payloadEnumValue;
 
+    @XStreamAlias("wpml:payloadSubEnumValue")
+    private String payloadSubEnumValue;
+
     /**
      * 负载挂载位置
      * 负载挂载位置枚举值请参考产品支持页面中的相机枚举值中type-subtype-gimbalindex中的gimbalindex字段

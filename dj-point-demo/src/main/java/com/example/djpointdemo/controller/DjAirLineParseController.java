@@ -2,6 +2,7 @@ package com.example.djpointdemo.controller;
 
 import com.example.djpointdemo.dao.kml.KmlInfo;
 import com.example.djpointdemo.dao.kml.KmlParams;
+import com.example.djpointdemo.dto.AirLineTemporaryRequestJson;
 import com.example.djpointdemo.service.DjAirLineParseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class DjAirLineParseController {
      */
     @GetMapping("/parseKmz")
     public KmlInfo parseKmz(@RequestParam("fileUrl") String fileUrl){
-        return djAirLineParseService.parseKmz(fileUrl);
+        return djAirLineParseService.parseKmz(fileUrl, (short) 1);
     }
 
     /**
@@ -45,5 +46,18 @@ public class DjAirLineParseController {
     @PostMapping("/createKmz")
     public String createKmz(@RequestBody KmlParams kmlParams){
         return djAirLineParseService.createKmz(kmlParams);
+    }
+
+
+    /**
+     * 新建临时航线文件，并同步到大疆
+     *
+     * 航线参数取自上一次大疆创建的航线kmz,只需要更改里面的坐标点，最后一个坐标点 加 悬停动态
+     * @param requestJson
+     * @return
+     */
+    @PostMapping("/create/temporary/airLine/")
+    public String createTemporaryKmzUploadDj(@RequestBody AirLineTemporaryRequestJson requestJson){
+        return djAirLineParseService.createTemporaryKmzUploadDj(requestJson);
     }
 }

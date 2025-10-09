@@ -75,13 +75,13 @@ public class KmlPlacemark {
      */
     @XStreamAlias("wpml:useGlobalHeadingParam")
     private String useGlobalHeadingParam;
-//
-//    /**
-//     * 偏航角模式参数
-//     * 注：当且仅当“wpml:useGlobalHeadingParam”为“0”时必需
-//     */
-//    @XStreamAlias("wpml:waypointHeadingParam")
-//    private KmlWaypointHeadingParam waypointHeadingParam;
+
+    /**
+     * 偏航角模式参数
+     * 注：当且仅当“wpml:useGlobalHeadingParam”为“0”时必需
+     */
+    @XStreamAlias("wpml:waypointHeadingParam")
+    private KmlWaypointHeadingParam waypointHeadingParam;
 
     /**
      * 是否使用全局航点类型（全局航点转弯模式）
@@ -91,11 +91,11 @@ public class KmlPlacemark {
     private String useGlobalTurnParam;
 
     /**
-//     * 航点类型（航点转弯模式）
-//     * 注：当且仅当“wpml:useGlobalTurnParam”为“0”时必需
-//     */
-//    @XStreamAlias("wpml:waypointTurnParam")
-//    private KmlWaypointTurnParam waypointTurnParam;
+     * 航点类型（航点转弯模式）
+     * 注：当且仅当“wpml:useGlobalTurnParam”为“0”时必需
+     */
+    @XStreamAlias("wpml:waypointTurnParam")
+    private KmlWaypointTurnParam waypointTurnParam;
 
     /**
      * 该航段是否贴合直线  0：航段轨迹全程为曲线 1：航段轨迹尽量贴合两点连线
@@ -112,6 +112,9 @@ public class KmlPlacemark {
     @XStreamAlias("wpml:gimbalPitchAngle")
     private String gimbalPitchAngle;
 
+    @XStreamAlias("wpml:actionGroup")
+    private KmlActionGroup actionGroup;
+
     // 下面 wpml 文件使用
     /**
      * 航点执行高度
@@ -119,6 +122,9 @@ public class KmlPlacemark {
      */
     @XStreamAlias("wpml:executeHeight")
     private String executeHeight;
+
+    @XStreamAlias("wpml:waypointGimbalHeadingParam")
+    private KmlWaypointGimbalHeadingParam waypointGimbalHeadingParam;
 
     // 建图航拍模板元素
     /**
@@ -228,4 +234,17 @@ public class KmlPlacemark {
      */
     @XStreamAlias("LineString")
     private KmlLineString lineString;
+
+    @XStreamAlias("wpml:waypointWorkType")
+    private String waypointWorkType;
+
+    /**
+     * 经度
+     */
+    private String longitude;
+
+    /**
+     * 纬度
+     */
+    private String latitude;
 }

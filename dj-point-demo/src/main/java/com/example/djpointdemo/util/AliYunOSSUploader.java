@@ -41,7 +41,7 @@ public class AliYunOSSUploader {
      * 上传文件
      * @param credentialsInfo 解析的临时凭证信息
      */
-    public static void uploadFileToDji(String filePath, CredentialsInfo credentialsInfo) {
+    public static String uploadFileToDji(String filePath, CredentialsInfo credentialsInfo) {
         // Endpoint以华东1（杭州）为例，其它Region请按实际情况填写。
         String endpoint = credentialsInfo.getEndpoint();
         // STS临时凭证
@@ -78,6 +78,7 @@ public class AliYunOSSUploader {
             // 生成并返回上传文件后的访问地址
             String fileUrl = "https://" + bucketName + "." + endpoint.replace("https://", "") + "/" + objectName;
             System.out.println("上传成功，文件地址：" + fileUrl);
+            return objectName;
         } catch (OSSException oe) {
             System.out.println("Caught an OSSException, which means your request made it to OSS, "
                     + "but was rejected with an error response for some reason.");
@@ -95,5 +96,6 @@ public class AliYunOSSUploader {
                 ossClient.shutdown();
             }
         }
+        return null;
     }
 }

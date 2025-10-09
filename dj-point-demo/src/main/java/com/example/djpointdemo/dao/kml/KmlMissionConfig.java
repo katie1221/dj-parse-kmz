@@ -91,10 +91,27 @@ public class KmlMissionConfig {
     @XStreamAlias("wpml:droneInfo")
     private KmlDroneInfo droneInfo;
 
+    @XStreamAlias("wpml:waylineAvoidLimitAreaMode")
+    private String waylineAvoidLimitAreaMode;
+
     /**
      * 负载机型信息
      */
     @XStreamAlias("wpml:payloadInfo")
     private KmlPayloadInfo payloadInfo;
 
+    /**
+     * 参考起飞点经度
+     */
+    private String takeOffLongitude;
+
+    /**
+     * 参考起飞点纬度
+     */
+    private String takeOffLatitude;
+
+    /**
+     * 参考起飞点高度
+     */
+    private String takeOffHeight;
 }

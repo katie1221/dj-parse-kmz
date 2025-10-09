@@ -42,6 +42,12 @@ public class KmlFolder {
     @XStreamAlias("wpml:waylineCoordinateSysParam")
     private KmlWayLineCoordinateSysParam waylineCoordinateSysParam;
 
+    /**
+     * 负载设置
+     */
+    @XStreamAlias("wpml:payloadParam")
+    private KmlPayloadParam payloadParam;
+
     // 以下为航点飞行模板元素
     /**
      * 全局航点类型（全局航点转弯模式）
@@ -79,6 +85,12 @@ public class KmlFolder {
     private String globalHeight;
 
     /**
+     * 全局偏航角模式参数
+     */
+    @XStreamAlias("wpml:globalWaypointHeadingParam")
+    private KmlGlobalWaypointHeadingParam globalWaypointHeadingParam;
+
+    /**
      * 航点信息（包括航点经纬度和高度等）
      */
     @XStreamImplicit(itemFieldName = "Placemark")
@@ -102,9 +114,16 @@ public class KmlFolder {
     @XStreamAlias("wpml:waylineId")
     private String waylineId;
 
-//    /**
-//     * 航线初始动作
-//     */
-//    @XStreamAlias("wpml:startActionGroup")
-//    private KmlActionGroup startActionGroup;
+    @XStreamAlias("wpml:duration")
+    private String duration;
+
+    @XStreamAlias("wpml:distance")
+    private String distance;
+
+    /**
+     * 航线初始动作
+     * 注：该元素用于规划一系列初始动作，在航线开始前执行。航线中断恢复时，先执行初始动作，再执行航点动作
+     */
+    @XStreamAlias("wpml:startActionGroup")
+    private KmlActionGroup startActionGroup;
 }
