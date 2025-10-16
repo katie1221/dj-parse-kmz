@@ -38,12 +38,13 @@ public class ParseFileUtils {
      */
     public static KmlInfo parseKml(InputStream inputStream) {
         XStream xStream = new XStream();
-        xStream.allowTypes(new Class[]{KmlInfo.class, KmlWayLineCoordinateSysParam.class, KmlPoint.class});
+        xStream.allowTypes(new Class[]{KmlInfo.class, KmlActionGroup.class, KmlWayLineCoordinateSysParam.class, KmlPoint.class});
         xStream.alias("kml", KmlInfo.class);
         xStream.processAnnotations(KmlInfo.class);
         xStream.autodetectAnnotations(true);
         xStream.ignoreUnknownElements();
-//        xStream.addImplicitCollection(KmlActionGroup.class, "action");
+        xStream.addImplicitCollection(KmlActionGroup.class, "action");
+        xStream.addImplicitCollection(KmlPlacemark.class, "actionGroup");
         return (KmlInfo) xStream.fromXML(inputStream);
     }
 
@@ -212,3 +213,4 @@ public class ParseFileUtils {
         zipOutputStream.closeEntry(); // 关闭条目
     }
 }
+
