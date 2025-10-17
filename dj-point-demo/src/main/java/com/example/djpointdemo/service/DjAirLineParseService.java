@@ -2,6 +2,7 @@ package com.example.djpointdemo.service;
 
 import com.example.djpointdemo.dao.kml.KmlInfo;
 import com.example.djpointdemo.dao.kml.KmlParams;
+import com.example.djpointdemo.dao.model.KmlParamsReq;
 import com.example.djpointdemo.dto.AirLineTemporaryRequestJson;
 
 /**
@@ -38,4 +39,10 @@ public interface DjAirLineParseService {
      * @return
      */
     String createTemporaryKmzUploadDj(AirLineTemporaryRequestJson requestJson);
+
+    /**
+     * 通用生成kmz文件
+     * @param uavRouteReq
+     */
+    String buildCommonKmz(KmlParamsReq uavRouteReq);
 }

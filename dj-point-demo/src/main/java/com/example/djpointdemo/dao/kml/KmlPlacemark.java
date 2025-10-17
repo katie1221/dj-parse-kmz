@@ -148,6 +148,21 @@ public class KmlPlacemark {
     private String elevationOptimizeEnable;
 
     /**
+     * 是否开启智能摆拍
+     *
+     * 0：不开启
+     * 1：开启，飞行器在单次建图航拍任务过程中，可通过云台摆动完成正射与倾斜照片拍摄。
+     */
+    @XStreamAlias("wpml:smartObliqueEnable")
+    private String smartObliqueEnable;
+
+    /**
+     * 智能摆拍拍摄俯仰角 整型
+     */
+    @XStreamAlias("wpml:smartObliqueGimbalPitch")
+    private String smartObliqueGimbalPitch;
+
+    /**
      * 拍照模式（定时或定距） time：等时间拍照  distance：等间隔拍照
      * 注：建议使用“time”等时间拍照。在template.kml文件中定义“拍照模式”、“重叠率”和“飞行速度”，计算后得出间隔时间或间隔距离距离写入waylines.wpml中。
      */
@@ -165,6 +180,12 @@ public class KmlPlacemark {
      */
     @XStreamAlias("wpml:margin")
     private String margin;
+
+    /**
+     * 重叠率参数
+     */
+    @XStreamAlias("wpml:overlap")
+    private KmlOverlap overlap;
 
     /**
      * 测区多边形

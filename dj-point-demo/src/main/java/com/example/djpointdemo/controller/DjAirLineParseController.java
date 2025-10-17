@@ -2,6 +2,7 @@ package com.example.djpointdemo.controller;
 
 import com.example.djpointdemo.dao.kml.KmlInfo;
 import com.example.djpointdemo.dao.kml.KmlParams;
+import com.example.djpointdemo.dao.model.KmlParamsReq;
 import com.example.djpointdemo.dto.AirLineTemporaryRequestJson;
 import com.example.djpointdemo.service.DjAirLineParseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +60,13 @@ public class DjAirLineParseController {
     @PostMapping("/create/temporary/airLine/")
     public String createTemporaryKmzUploadDj(@RequestBody AirLineTemporaryRequestJson requestJson){
         return djAirLineParseService.createTemporaryKmzUploadDj(requestJson);
+    }
+
+    /**
+     * 通用生成kmz文件
+     */
+    @PostMapping("/common/buildKmz/")
+    public String buildCommonKmz(@RequestBody KmlParamsReq uavRouteReq) {
+        return djAirLineParseService.buildCommonKmz(uavRouteReq);
     }
 }

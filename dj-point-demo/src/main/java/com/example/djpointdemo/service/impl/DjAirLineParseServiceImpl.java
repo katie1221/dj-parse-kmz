@@ -1,23 +1,23 @@
 package com.example.djpointdemo.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.oss.ClientException;
 import com.example.djpointdemo.dao.kml.*;
+import com.example.djpointdemo.dao.model.KmlParamsReq;
 import com.example.djpointdemo.dto.AirLineTemporaryRequestJson;
 import com.example.djpointdemo.dto.CredentialsInfo;
 import com.example.djpointdemo.dto.Gps;
 import com.example.djpointdemo.service.DjAirLineParseService;
-import com.example.djpointdemo.util.AliYunOSSUploader;
-import com.example.djpointdemo.util.GpsTransfer;
-import com.example.djpointdemo.util.ParseFileUtils;
-import com.example.djpointdemo.util.VoUtils;
+import com.example.djpointdemo.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -241,7 +241,6 @@ public class DjAirLineParseServiceImpl implements DjAirLineParseService {
         return handleAirLineUploadDj(projectUuid, name, kmlParams);
     }
 
-
     /**
      * 获取大疆坐标列表（gcj02到wgs84转换）
      * @param gpsList
@@ -385,5 +384,18 @@ public class DjAirLineParseServiceImpl implements DjAirLineParseService {
         credentialsInfo.setExpire(43200L);
         credentialsInfo.setSecurityToken(securityToken);
         return credentialsInfo;
+    }
+
+    /**
+     * 通用生成kmz文件
+     * @param kmlParamsReq
+     * @return
+     */
+    @Override
+    public String buildCommonKmz(KmlParamsReq kmlParamsReq) {
+        String fileName = System.currentTimeMillis() + "";
+        //1.生成航线 KMZ 文件
+        String url = BuildFileUtils.buildKmz(fileName, kmlParamsReq);
+        return url;
     }
 }
