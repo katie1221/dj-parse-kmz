@@ -1,5 +1,6 @@
 package com.example.djpointdemo.dao.model;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
@@ -137,4 +138,8 @@ public class KmlParamsReq implements Serializable {
      */
     private List<PointActionReq> startActionList;
 
+    /**
+     * 倾斜摄影 航线列表
+     */
+    private List<FolderListReq> folderList;
 }

@@ -60,6 +60,7 @@ public class BuildFileUtils {
         XStream xStream = new XStream(new DomDriver());
         xStream.processAnnotations(KmlInfo.class);
         xStream.addImplicitCollection(KmlActionGroup.class, "action");
+        xStream.addImplicitCollection(KmlPlacemark.class, "actionGroup");
 
         String kml = XML_HEADER + xStream.toXML(kmlInfo);
         String wpml = XML_HEADER + xStream.toXML(wpmlInfo);
@@ -121,7 +122,13 @@ public class BuildFileUtils {
             kmlDocument.setUpdateTime(String.valueOf(DateUtil.current()));
         }
         kmlDocument.setKmlMissionConfig(buildKmlMissionConfig(kmlParams));
-        kmlDocument.setFolder(Collections.singletonList(buildKmlFolder(fileType, kmlParams)));
+        if (StringUtils.equals(fileType, FileTypeConstants.WPML) && kmlParams.getTemplateType().equals("mapping3d")) {
+            // 倾斜摄影 单独处理
+            kmlDocument.setFolder(buildKmlFolderList(kmlParams));
+
+        } else {
+            kmlDocument.setFolder(Collections.singletonList(buildKmlFolder(fileType, kmlParams)));
+        }
         return kmlDocument;
     }
 
@@ -191,14 +198,14 @@ public class BuildFileUtils {
         kmlFolder.setAutoFlightSpeed(String.valueOf(kmlParams.getAutoFlightSpeed()));
         if (StringUtils.equals(fileType, FileTypeConstants.KML)) {
             kmlFolder.setTemplateType(kmlParams.getTemplateType());
-            kmlFolder.setWaylineCoordinateSysParam(buildKmlWayLineCoordinateSysParam(kmlParams.getTemplateType(), HeightModeEnums.RELATIVE_TO_START_POINT.getValue(),
+            kmlFolder.setWaylineCoordinateSysParam(buildKmlWayLineCoordinateSysParam(kmlParams.getTemplateType(), HeightModeEnums.EGM96.getValue(),
                     String.valueOf(kmlParams.getGlobalHeight())));
             kmlFolder.setPayloadParam(buildKmlPayloadParam(kmlParams));
         }
         if (StringUtils.equals(fileType, FileTypeConstants.WPML)) {
             kmlFolder.setWaylineId("0");
             //相对起飞点高度模式
-            kmlFolder.setExecuteHeightMode("relativeToStartPoint");
+            kmlFolder.setExecuteHeightMode("WGS84");
             if (CollectionUtil.isNotEmpty(kmlParams.getStartActionList())) {
                 KmlActionGroup kmlActionGroup = new KmlActionGroup();
                 kmlActionGroup.setAction(getKmlActionList(kmlParams.getStartActionList(), kmlParams));
@@ -374,6 +381,8 @@ public class BuildFileUtils {
         kmlPlacemark.setEllipsoidHeight(String.valueOf(kmlParams.getGlobalHeight()));
         kmlPlacemark.setHeight(String.valueOf(kmlParams.getGlobalHeight()));
         kmlPlacemark.setPolygon(buildKmlPolygon(mappingTypeReq.getCoordinates()));
+        kmlPlacemark.setInclinedGimbalPitch(mappingTypeReq.getInclinedGimbalPitch());
+        kmlPlacemark.setInclinedFlightSpeed(mappingTypeReq.getInclinedFlightSpeed());
         return kmlPlacemark;
     }
 
@@ -611,5 +620,44 @@ public class BuildFileUtils {
             }
         }
         return kmlActionActuatorFuncParam;
+    }
+
+    /**
+     * 组装 倾斜摄影 类的 Folder
+     * @param kmlParams
+     * @return
+     */
+    public static List<KmlFolder> buildKmlFolderList(KmlParamsReq kmlParams) {
+        List<KmlFolder> kmlFolderList = new ArrayList<>();
+        String autoFlightSpeed = String.valueOf(kmlParams.getAutoFlightSpeed());
+
+        List<FolderListReq> folderList = kmlParams.getFolderList();
+        if (CollectionUtil.isNotEmpty(folderList)) {
+          for (FolderListReq folderListReq : folderList) {
+              KmlFolder kmlFolder = new KmlFolder();
+              kmlFolder.setTemplateId("0");
+              kmlFolder.setAutoFlightSpeed(autoFlightSpeed);
+              kmlFolder.setWaylineId(folderListReq.getWayLineId());
+              //相对起飞点高度模式
+              kmlFolder.setExecuteHeightMode("WGS84");
+              if (CollectionUtil.isNotEmpty(folderListReq.getStartActionList())) {
+                  KmlActionGroup kmlActionGroup = new KmlActionGroup();
+                  kmlActionGroup.setAction(getKmlActionList(folderListReq.getStartActionList(), kmlParams));
+                  kmlFolder.setStartActionGroup(kmlActionGroup);
+              }
+
+              // 构建航点
+              List<RoutePointReq> routePointList = folderListReq.getRoutePointList();
+              if (CollectionUtil.isNotEmpty(routePointList)) {
+                  List<KmlPlacemark> kmlPlacemarkList = new ArrayList<>();
+                  for (RoutePointReq routePointInfo : routePointList) {
+                      kmlPlacemarkList.add(buildKmlPlacemark(routePointInfo, kmlParams, FileTypeConstants.WPML));
+                  }
+                  kmlFolder.setPlacemarkList(kmlPlacemarkList);
+              }
+              kmlFolderList.add(kmlFolder);
+          }
+        }
+        return kmlFolderList;
     }
 }

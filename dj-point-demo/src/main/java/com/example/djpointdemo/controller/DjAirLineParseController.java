@@ -51,7 +51,7 @@ public class DjAirLineParseController {
 
 
     /**
-     * 新建临时航线文件，并同步到大疆
+     * 新建临时航点航线文件，并同步到大疆
      *
      * 航线参数取自上一次大疆创建的航线kmz,只需要更改里面的坐标点，最后一个坐标点 加 悬停动态
      * @param requestJson
@@ -63,7 +63,7 @@ public class DjAirLineParseController {
     }
 
     /**
-     * 通用生成kmz文件
+     * 通用生成kmz文件 航点航线/建图航拍/倾斜摄影 等
      */
     @PostMapping("/common/buildKmz/")
     public String buildCommonKmz(@RequestBody KmlParamsReq uavRouteReq) {

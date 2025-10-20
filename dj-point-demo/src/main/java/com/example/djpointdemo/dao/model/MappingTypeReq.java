@@ -64,5 +64,17 @@ public class MappingTypeReq implements Serializable {
      */
     private List<CoordinatePointReq> coordinates;
 
+    // 倾斜摄影模板元素
+    /**
+     * 云台俯仰角度（倾斜）
+     * 注：不同云台可转动范围不同。倾斜摄影模板会被生成五条航线，其中1条采集正射影像，4条采集倾斜影像。此元素用于设置倾斜影像采集时云台俯仰角度。
+     */
+    private String inclinedGimbalPitch;
+
+    /**
+     * 航线飞行速度（倾斜）
+     * 注：倾斜摄影模板会被生成五条航线，其中1条采集正射影像，4条采集倾斜影像。此元素用于设置倾斜影像采集时飞行目标速度。
+     */
+    private String inclinedFlightSpeed;
 
 }
